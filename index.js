@@ -13,6 +13,13 @@ app.post("/profile", upload.array("avatar"), function (req, res, next) {
   return res.json({ success: true });
 });
 
+process.on("uncaughtException", (err) => {
+  if (err.message !== "Unexpected end of form") {
+    // Gracefully shut down your application if it is not the uncatch bug from multer
+    process.exit(1);
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Express started at port:${PORT}`);
 });
